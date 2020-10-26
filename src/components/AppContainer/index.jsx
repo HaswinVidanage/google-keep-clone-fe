@@ -1,8 +1,21 @@
 import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
-import Paper from '@material-ui/core/Paper';
+import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
+// import white from '@material-ui/core/colors/grey';
+// import green from '@material-ui/core/colors/green';
 import Grid from '@material-ui/core/Grid';
 import CustomAppBar  from "../AppBar/customAppBar";
+
+const theme = createMuiTheme({
+	palette: {
+		primary: {
+			main:'#FFF',
+		},
+		secondary: {
+			main: '#5f6368',
+		},
+	},
+});
+
 
 const useStyles = makeStyles((theme) => ({
 	root: {
@@ -14,13 +27,15 @@ const useStyles = makeStyles((theme) => ({
 const AppContainer = () => {
 	const classes = useStyles();
 	return (
-		<div className={classes.root}>
-			<Grid container spacing={1}>
-				<Grid container item xs={12} >
-					<CustomAppBar/>
+		<ThemeProvider theme={theme}>
+			<div className={classes.root}>
+				<Grid container spacing={1}>
+					<Grid container item xs={12} >
+						<CustomAppBar/>
+					</Grid>
 				</Grid>
-			</Grid>
-		</div>
+			</div>
+		</ThemeProvider>
 	);
 };
 
