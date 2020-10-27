@@ -4,6 +4,7 @@ import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/sty
 // import green from '@material-ui/core/colors/green';
 import Grid from '@material-ui/core/Grid';
 import CustomAppBar  from "../AppBar/customAppBar";
+import AppBody from '../AppBody';
 
 const theme = createMuiTheme({
 	palette: {
@@ -29,9 +30,10 @@ const AppContainer = () => {
 	return (
 		<ThemeProvider theme={theme}>
 			<div className={classes.root}>
-				<Grid container spacing={1}>
+				<Grid container>
 					<Grid container item xs={12} >
 						<CustomAppBar/>
+						<AppBody/>
 					</Grid>
 				</Grid>
 			</div>
