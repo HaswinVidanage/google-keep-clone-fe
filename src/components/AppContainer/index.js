@@ -4,7 +4,7 @@ import {
 	BrowserRouter as Router,
 	Switch,
 	Route,
-	Link,
+	Redirect,
 } from "react-router-dom";
 import {
 	Grid,
@@ -13,7 +13,9 @@ import {
 import CustomAppBar  from "../AppBar/customAppBar";
 import AppBody from '../AppBody';
 import Login from '../Login';
-
+import Dashboard from '../Dashboard';
+import {GetItem} from "../../utils/localstorage";
+import LOCAL_STORAGE_KEYS from "../../const/localstorage";
 const theme = createMuiTheme({
 	palette: {
 		primary: {
@@ -60,16 +62,40 @@ const AppContainer = () => {
 			<div className={classes.root}>
 				<Router>
 					<Switch>
-						<Route path="/home">
-							<HomePage/>
-						</Route>
 						<Route path="/login">
 							<LoginPage/>
 						</Route>
+						<PrivateRoute path="/">
+							<Dashboard/>
+						</PrivateRoute>
 					</Switch>
 				</Router>
 			</div>
 		</ThemeProvider>
+	);
+};
+
+// A wrapper for <Route> that redirects to the login
+// screen if you're not yet authenticated.
+const PrivateRoute = ({ children, ...rest }) => {
+	const token = GetItem(LOCAL_STORAGE_KEYS.TOKEN);
+	const loggedIn = token;
+	return (
+		<Route
+			{...rest}
+			render={({ location }) =>
+				loggedIn ? (
+					children
+				) : (
+					<Redirect
+						to={{
+							pathname: "/login",
+							state: { from: location }
+						}}
+					/>
+				)
+			}
+		/>
 	);
 };
 

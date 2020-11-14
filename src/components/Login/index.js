@@ -2,9 +2,16 @@ import React, {useState} from "react";
 import {withStyles} from '@material-ui/core/styles';
 import Container from "@material-ui/core/Container";
 import { Paper, TextField, Button, Typography } from "@material-ui/core";
+import {
+	useHistory,
+	useLocation
+} from "react-router-dom";
+
 import PropTypes from "prop-types";
 import { useMutation } from 'urql';
-
+import get from "lodash.get";
+import {SetItem} from "../../utils/localstorage";
+import LOCAL_STORAGE_KEYS from "../../const/localstorage";
 
 const LoginGql = `
 	mutation login ($name: String!, $password: String!) {
@@ -34,14 +41,33 @@ const Login = (props) => {
 
 	const [doLoginResult, doLogin] = useMutation(LoginGql);
 
+	const history = useHistory();
+	const location = useLocation();
+
+	let { from } = location.state || { from: { pathname: "/" } };
+
+
 	const onLoginClick = async(event) => {
 		event.preventDefault();
 		const params = {
 			name: 'user1',
 			password: '123',
 		};
-		const result  = await doLogin(params);
-		console.log('form submitted : ', result)
+
+		const res  = await doLogin(params);
+		if (res.error) {
+			// TODO handle login error
+		}
+
+		const token = get(res, 'data.login', '');
+		if (token !== '') {
+			console.log('HDV token: ', token);
+			SetItem(LOCAL_STORAGE_KEYS.TOKEN, token);
+			history.replace(from);
+		} else {
+			// TODO handle token empty case
+		}
+
 	};
 	return (
 		<div className={classes.pageWrapper}>
