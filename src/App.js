@@ -1,24 +1,31 @@
 import logo from './logo.svg';
 import './App.css';
+import AppContainer from './components/AppContainer';
+import {
+    BrowserRouter as Router,
+    Switch,
+    Route,
+    Link,
+} from "react-router-dom";
+import { createClient, Provider } from 'urql';
+
+const client = createClient({
+    url: 'http://localhost:8080/query',
+    fetchOptions: {
+        headers: { Authorization: 'test' },
+    },
+});
+
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+      <Router>
+        <div className="App">
+            <Provider value={client}>
+                <AppContainer/>
+            </Provider>
+        </div>
+      </Router>
   );
 }
 
