@@ -8,11 +8,15 @@ import {
     Link,
 } from "react-router-dom";
 import { createClient, Provider } from 'urql';
+import {GetItem} from "./utils/localstorage";
+import LOCAL_STORAGE_KEYS from "./const/localstorage";
+
+const token = GetItem(LOCAL_STORAGE_KEYS.TOKEN);
 
 const client = createClient({
     url: 'http://localhost:8080/query',
     fetchOptions: {
-        headers: { Authorization: 'test' },
+        headers: { Authorization: token ? token : '' },
     },
 });
 

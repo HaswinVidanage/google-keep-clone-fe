@@ -9,13 +9,14 @@ import {
 
 import PropTypes from "prop-types";
 import { useMutation } from 'urql';
-import get from "lodash.get";
+import {get} from "lodash";
 import {SetItem} from "../../utils/localstorage";
 import LOCAL_STORAGE_KEYS from "../../const/localstorage";
+import {SanitizeError} from "../../utils/errorhandler";
 
 const LoginGql = `
-	mutation login ($name: String!, $password: String!) {
-	  login(input: {name: $name, password: $password})
+	mutation login ($email: String!, $password: String!) {
+	  login(input: {email: $email, password: $password})
 	}
 `;
 
@@ -36,7 +37,6 @@ const Login = (props) => {
 	};
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const result = {};
 	const loading = false;
 
 	const [doLoginResult, doLogin] = useMutation(LoginGql);
@@ -45,30 +45,45 @@ const Login = (props) => {
 	const location = useLocation();
 
 	let { from } = location.state || { from: { pathname: "/" } };
+	const [response, setResponse]= useState({
+		status: "",
+		error: "",
+		response: {}
+	});
 
+	const handleResponse = (response) => {
+		let status = "success";
+		let error = null;
+		if (!response.data) {
+			status = "error";
+			error = SanitizeError(get(response, 'error.graphQLErrors[0].message',  'Login failed'))
+		}
+		setResponse({
+			status,
+			error,
+			response,
+		})
+	};
 
 	const onLoginClick = async(event) => {
 		event.preventDefault();
 		const params = {
-			name: 'user1',
-			password: '123',
+			email,
+			password,
 		};
 
 		const res  = await doLogin(params);
-		if (res.error) {
-			// TODO handle login error
-		}
+		handleResponse(res);
+		handleToken(get(res, 'data.login', ''))
+	};
 
-		const token = get(res, 'data.login', '');
+	const handleToken = (token => {
 		if (token !== '') {
-			console.log('HDV token: ', token);
 			SetItem(LOCAL_STORAGE_KEYS.TOKEN, token);
 			history.replace(from);
-		} else {
-			// TODO handle token empty case
 		}
+	});
 
-	};
 	return (
 		<div className={classes.pageWrapper}>
 			<Container maxWidth="md" className={classes.pageContainer}>
@@ -76,8 +91,16 @@ const Login = (props) => {
 					<form className={classes.boxWrapper} onSubmit={onLoginClick}>
 						<img className={classes.logo} src={`../assets/logo.png`} alt={"logo"} />
 						<Typography className={classes.textWelcome} color="textSecondary" variant="subtitle1">Welcome back!</Typography>
-						<TextField error={result.status === "failure"} InputLabelProps={inputLabelProps} InputProps={inputProps} name="email" onChange={event => setEmail(event.target.value)} label="Email"  variant="outlined" fullWidth margin="normal" />
-						<TextField error={result.status === "failure"} InputLabelProps={inputLabelProps} InputProps={inputProps} name="password" onChange={event => setPassword(event.target.value)} label="Password" type="password" variant="outlined" fullWidth margin="normal" helperText={result.error} />
+						<TextField
+							error={response.status === "error"}
+							InputLabelProps={inputLabelProps}
+							InputProps={inputProps} name="email"
+							onChange={event => setEmail(event.target.value)}
+							label="Email"
+							variant="outlined"
+							fullWidth margin="normal" />
+
+						<TextField error={response.status === "error"} InputLabelProps={inputLabelProps} InputProps={inputProps} name="password" onChange={event => setPassword(event.target.value)} label="Password" type="password" variant="outlined" fullWidth margin="normal" helperText={response.error} />
 						<Button classes={{ root: classes.loginButtonRoot, label: classes.loginButtonText }} type="submit" disabled={loading || email === "" || password === ""} variant="contained" color="secondary" disableElevation fullWidth size="large">Log In</Button>
 						<Typography className={classes.textNotice} color="textSecondary" variant="caption">Your user login &amp; data will be deleted<br />on container restart, and happens so<br />often as I'm running this on Free Tier<br /></Typography>
 					</form>
