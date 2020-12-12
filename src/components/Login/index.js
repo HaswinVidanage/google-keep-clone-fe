@@ -1,21 +1,24 @@
 import React, {useState} from "react";
 import {withStyles} from '@material-ui/core/styles';
 import Container from "@material-ui/core/Container";
-import { Paper, TextField, Button, Typography } from "@material-ui/core";
+import {Paper, TextField, Button, Typography, Grid} from "@material-ui/core";
 import {
 	useHistory,
 	useLocation
 } from "react-router-dom";
-
+import {
+	Link
+} from "react-router-dom";
 import PropTypes from "prop-types";
 import { useMutation } from 'urql';
-import get from "lodash.get";
+import {get} from "lodash";
 import {SetItem} from "../../utils/localstorage";
 import LOCAL_STORAGE_KEYS from "../../const/localstorage";
+import {SanitizeError} from "../../utils/errorhandler";
 
 const LoginGql = `
-	mutation login ($name: String!, $password: String!) {
-	  login(input: {name: $name, password: $password})
+	mutation login ($email: String!, $password: String!) {
+	  login(input: {email: $email, password: $password})
 	}
 `;
 
@@ -36,9 +39,6 @@ const Login = (props) => {
 	};
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const result = {};
-	const loading = false;
-
 	const [doLoginResult, doLogin] = useMutation(LoginGql);
 
 	const history = useHistory();
@@ -46,44 +46,101 @@ const Login = (props) => {
 
 	let { from } = location.state || { from: { pathname: "/" } };
 
-
 	const onLoginClick = async(event) => {
 		event.preventDefault();
 		const params = {
-			name: 'user1',
-			password: '123',
+			email,
+			password,
 		};
 
 		const res  = await doLogin(params);
-		if (res.error) {
-			// TODO handle login error
-		}
+		handleToken(get(res, 'data.login', ''))
+	};
 
-		const token = get(res, 'data.login', '');
+	const handleToken = (token => {
 		if (token !== '') {
-			console.log('HDV token: ', token);
 			SetItem(LOCAL_STORAGE_KEYS.TOKEN, token);
 			history.replace(from);
-		} else {
-			// TODO handle token empty case
 		}
+	});
 
-	};
 	return (
-		<div className={classes.pageWrapper}>
-			<Container maxWidth="md" className={classes.pageContainer}>
-				<Paper elevation={3}>
-					<form className={classes.boxWrapper} onSubmit={onLoginClick}>
-						<img className={classes.logo} src={`../assets/logo.png`} alt={"logo"} />
-						<Typography className={classes.textWelcome} color="textSecondary" variant="subtitle1">Welcome back!</Typography>
-						<TextField error={result.status === "failure"} InputLabelProps={inputLabelProps} InputProps={inputProps} name="email" onChange={event => setEmail(event.target.value)} label="Email"  variant="outlined" fullWidth margin="normal" />
-						<TextField error={result.status === "failure"} InputLabelProps={inputLabelProps} InputProps={inputProps} name="password" onChange={event => setPassword(event.target.value)} label="Password" type="password" variant="outlined" fullWidth margin="normal" helperText={result.error} />
-						<Button classes={{ root: classes.loginButtonRoot, label: classes.loginButtonText }} type="submit" disabled={loading || email === "" || password === ""} variant="contained" color="secondary" disableElevation fullWidth size="large">Log In</Button>
-						<Typography className={classes.textNotice} color="textSecondary" variant="caption">Your user login &amp; data will be deleted<br />on container restart, and happens so<br />often as I'm running this on Free Tier<br /></Typography>
-					</form>
-				</Paper>
-			</Container>
-		</div>
+		<Grid container>
+			<div className={classes.pageWrapper}>
+				<Container maxWidth="md" className={classes.pageContainer}>
+					<Paper elevation={3}>
+						<form className={classes.boxWrapper} onSubmit={onLoginClick}>
+							<img
+								className={classes.logo}
+								src={`../assets/logo.png`}
+								alt={"logo"} />
+
+							<Typography className={classes.textWelcome} color="textSecondary" variant="subtitle1">Welcome back!</Typography>
+							<TextField
+								type="email"
+								error={doLoginResult.error}
+								InputLabelProps={inputLabelProps}
+								InputProps={inputProps}
+								name="email"
+								onChange={event => setEmail(event.target.value)}
+								label="Email"
+								variant="outlined"
+								fullWidth margin="normal" />
+
+							<TextField
+								error={doLoginResult.error}
+								InputLabelProps={inputLabelProps}
+								InputProps={inputProps}
+								name="password"
+								onChange={event => setPassword(event.target.value)}
+								label="Password"
+								type="password"
+								variant="outlined"
+								fullWidth
+								margin="normal"
+								helperText={doLoginResult.error && SanitizeError(get(doLoginResult, 'error.graphQLErrors[0].message',  'Server error occurred. Please try again.'))}/>
+
+							<Button
+								classes={{ root: classes.loginButtonRoot, label: classes.loginButtonText }}
+								type="submit"
+								disabled={doLoginResult.fetching || email === "" || password === ""}
+								variant="contained"
+								color="secondary"
+								disableElevation
+								fullWidth
+								size="large">
+								Log In
+							</Button>
+
+							<Typography
+								className={classes.textNotice}
+								color="textSecondary"
+								variant="caption">
+								Your user login &amp; data will be deleted<br />on container restart, and happens so<br />often as I'm running this on Free Tier<br />
+							</Typography>
+						</form>
+					</Paper>
+
+					<Typography
+						className={classes.textRegisterText}
+						color="textSecondary"
+						variant="body2">
+						Don't have an account?
+						<Link
+							className={classes.textRegister}
+							to="/register">
+							Register
+						</Link>
+					</Typography>
+				</Container>
+				<Typography
+					className={classes.textAttribution}
+					color="textSecondary"
+					variant="body2">
+					Created by <a className={classes.textCreator} href=" https://github.com/HaswinVidanage/google-keep-clone-fe">Haswin Vidanage</a>
+				</Typography>
+			</div>
+		</Grid>
 	);
 };
 
@@ -97,10 +154,10 @@ const styles = theme => ({
 	},
 	pageContainer: {
 		display: "flex",
+		flexDirection: "column",
 		alignItems: "center",
 		justifyContent: "center",
-		width: '100%',
-		height: '100%',
+		flexGrow: "1"
 	},
 	boxWrapper: {
 		display: "flex",
