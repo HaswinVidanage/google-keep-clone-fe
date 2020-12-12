@@ -8,8 +8,10 @@ import {
     Link,
 } from "react-router-dom";
 import { createClient, Provider } from 'urql';
+import { ThemeProvider, CssBaseline } from "@material-ui/core";
 import {GetItem} from "./utils/localstorage";
 import LOCAL_STORAGE_KEYS from "./const/localstorage";
+import { light } from "./theme";
 
 const token = GetItem(LOCAL_STORAGE_KEYS.TOKEN);
 
@@ -23,13 +25,16 @@ const client = createClient({
 
 function App() {
   return (
-      <Router>
-        <div className="App">
-            <Provider value={client}>
-                <AppContainer/>
-            </Provider>
-        </div>
-      </Router>
+      <>
+          <ThemeProvider theme={light}>
+              <CssBaseline />
+              <div className="App">
+                  <Provider value={client}>
+                      <AppContainer/>
+                  </Provider>
+              </div>
+          </ThemeProvider>
+      </>
   );
 }
 

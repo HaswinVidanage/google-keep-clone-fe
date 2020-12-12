@@ -1,12 +1,14 @@
 import React, {useState} from "react";
 import {withStyles} from '@material-ui/core/styles';
 import Container from "@material-ui/core/Container";
-import { Paper, TextField, Button, Typography } from "@material-ui/core";
+import {Paper, TextField, Button, Typography, Grid} from "@material-ui/core";
 import {
 	useHistory,
 	useLocation
 } from "react-router-dom";
-
+import {
+	Link
+} from "react-router-dom";
 import PropTypes from "prop-types";
 import { useMutation } from 'urql';
 import {get} from "lodash";
@@ -37,33 +39,12 @@ const Login = (props) => {
 	};
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
-	const loading = false;
-
 	const [doLoginResult, doLogin] = useMutation(LoginGql);
 
 	const history = useHistory();
 	const location = useLocation();
 
 	let { from } = location.state || { from: { pathname: "/" } };
-	const [response, setResponse]= useState({
-		status: "",
-		error: "",
-		response: {}
-	});
-
-	const handleResponse = (response) => {
-		let status = "success";
-		let error = null;
-		if (!response.data) {
-			status = "error";
-			error = SanitizeError(get(response, 'error.graphQLErrors[0].message',  'Login failed'))
-		}
-		setResponse({
-			status,
-			error,
-			response,
-		})
-	};
 
 	const onLoginClick = async(event) => {
 		event.preventDefault();
@@ -73,7 +54,6 @@ const Login = (props) => {
 		};
 
 		const res  = await doLogin(params);
-		handleResponse(res);
 		handleToken(get(res, 'data.login', ''))
 	};
 
@@ -85,28 +65,82 @@ const Login = (props) => {
 	});
 
 	return (
-		<div className={classes.pageWrapper}>
-			<Container maxWidth="md" className={classes.pageContainer}>
-				<Paper elevation={3}>
-					<form className={classes.boxWrapper} onSubmit={onLoginClick}>
-						<img className={classes.logo} src={`../assets/logo.png`} alt={"logo"} />
-						<Typography className={classes.textWelcome} color="textSecondary" variant="subtitle1">Welcome back!</Typography>
-						<TextField
-							error={response.status === "error"}
-							InputLabelProps={inputLabelProps}
-							InputProps={inputProps} name="email"
-							onChange={event => setEmail(event.target.value)}
-							label="Email"
-							variant="outlined"
-							fullWidth margin="normal" />
+		<Grid container>
+			<div className={classes.pageWrapper}>
+				<Container maxWidth="md" className={classes.pageContainer}>
+					<Paper elevation={3}>
+						<form className={classes.boxWrapper} onSubmit={onLoginClick}>
+							<img
+								className={classes.logo}
+								src={`../assets/logo.png`}
+								alt={"logo"} />
 
-						<TextField error={response.status === "error"} InputLabelProps={inputLabelProps} InputProps={inputProps} name="password" onChange={event => setPassword(event.target.value)} label="Password" type="password" variant="outlined" fullWidth margin="normal" helperText={response.error} />
-						<Button classes={{ root: classes.loginButtonRoot, label: classes.loginButtonText }} type="submit" disabled={loading || email === "" || password === ""} variant="contained" color="secondary" disableElevation fullWidth size="large">Log In</Button>
-						<Typography className={classes.textNotice} color="textSecondary" variant="caption">Your user login &amp; data will be deleted<br />on container restart, and happens so<br />often as I'm running this on Free Tier<br /></Typography>
-					</form>
-				</Paper>
-			</Container>
-		</div>
+							<Typography className={classes.textWelcome} color="textSecondary" variant="subtitle1">Welcome back!</Typography>
+							<TextField
+								type="email"
+								error={doLoginResult.error}
+								InputLabelProps={inputLabelProps}
+								InputProps={inputProps}
+								name="email"
+								onChange={event => setEmail(event.target.value)}
+								label="Email"
+								variant="outlined"
+								fullWidth margin="normal" />
+
+							<TextField
+								error={doLoginResult.error}
+								InputLabelProps={inputLabelProps}
+								InputProps={inputProps}
+								name="password"
+								onChange={event => setPassword(event.target.value)}
+								label="Password"
+								type="password"
+								variant="outlined"
+								fullWidth
+								margin="normal"
+								helperText={doLoginResult.error && SanitizeError(get(doLoginResult, 'error.graphQLErrors[0].message',  'Server error occurred. Please try again.'))}/>
+
+							<Button
+								classes={{ root: classes.loginButtonRoot, label: classes.loginButtonText }}
+								type="submit"
+								disabled={doLoginResult.fetching || email === "" || password === ""}
+								variant="contained"
+								color="secondary"
+								disableElevation
+								fullWidth
+								size="large">
+								Log In
+							</Button>
+
+							<Typography
+								className={classes.textNotice}
+								color="textSecondary"
+								variant="caption">
+								Your user login &amp; data will be deleted<br />on container restart, and happens so<br />often as I'm running this on Free Tier<br />
+							</Typography>
+						</form>
+					</Paper>
+
+					<Typography
+						className={classes.textRegisterText}
+						color="textSecondary"
+						variant="body2">
+						Don't have an account?
+						<Link
+							className={classes.textRegister}
+							to="/register">
+							Register
+						</Link>
+					</Typography>
+				</Container>
+				<Typography
+					className={classes.textAttribution}
+					color="textSecondary"
+					variant="body2">
+					Created by <a className={classes.textCreator} href=" https://github.com/HaswinVidanage/google-keep-clone-fe">Haswin Vidanage</a>
+				</Typography>
+			</div>
+		</Grid>
 	);
 };
 
@@ -120,10 +154,10 @@ const styles = theme => ({
 	},
 	pageContainer: {
 		display: "flex",
+		flexDirection: "column",
 		alignItems: "center",
 		justifyContent: "center",
-		width: '100%',
-		height: '100%',
+		flexGrow: "1"
 	},
 	boxWrapper: {
 		display: "flex",

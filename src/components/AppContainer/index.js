@@ -16,13 +16,14 @@ import Login from '../Login';
 import Dashboard from '../Dashboard';
 import {GetItem} from "../../utils/localstorage";
 import LOCAL_STORAGE_KEYS from "../../const/localstorage";
+import Register from "../Register";
 const theme = createMuiTheme({
 	palette: {
 		primary: {
 			main:'#FFF',
 		},
 		secondary: {
-			main: '#5f6368',
+			main: '#ffc107',
 		},
 	},
 });
@@ -46,13 +47,6 @@ const HomePage = () => {
 	)
 };
 
-const LoginPage = () => {
-	return (
-		<Grid container>
-			<Login/>
-		</Grid>
-	);
-};
 
 const AppContainer = () => {
 	const classes = useStyles();
@@ -62,12 +56,15 @@ const AppContainer = () => {
 			<div className={classes.root}>
 				<Router>
 					<Switch>
-						<Route path="/login">
-							<LoginPage/>
-						</Route>
-						<PrivateRoute path="/">
+						<PrivateRoute exact path="/">
 							<Dashboard/>
 						</PrivateRoute>
+						<Route path="/login">
+							<Login/>
+						</Route>
+						<Route path="/register">
+							<Register/>
+						</Route>
 					</Switch>
 				</Router>
 			</div>
