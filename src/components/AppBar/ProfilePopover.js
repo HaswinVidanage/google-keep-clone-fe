@@ -5,6 +5,11 @@ import {
   FaceOutlined as FaceIcon,
 } from "@material-ui/icons";
 import { useUserStore } from "../../store"
+import {RemoveItem} from "../../utils/localstorage";
+import {
+  useHistory
+} from "react-router-dom";
+import LOCAL_STORAGE_KEYS from "../../const/localstorage";
 
 const useStyles = makeStyles(theme => ({
   popover: {
@@ -60,9 +65,11 @@ export default function ProfilePopover({ anchorEl, isOpen, onClose }) {
   const theme = useTheme();
   const id = isOpen ? "profile-popover" : undefined;
   const [{ name, email }] = useUserStore();
-
+  const history = useHistory();
   const doLogout = () => {
     // todo: remove token and sign out
+    RemoveItem(LOCAL_STORAGE_KEYS.TOKEN);
+    history.push("/");
   };
 
   return (

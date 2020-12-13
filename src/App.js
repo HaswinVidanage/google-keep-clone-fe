@@ -15,6 +15,8 @@ import { light } from "./theme";
 
 const token = GetItem(LOCAL_STORAGE_KEYS.TOKEN);
 
+
+console.log('HDV token: ', token);
 const client = createClient({
     url: 'http://localhost:8080/query',
     fetchOptions: {

@@ -85,6 +85,7 @@ const AppBody = (props) => {
 			: "100%"
 		: width;
 
+	console.log('HDV theme: ', theme);
 	return (
 		<main>
 			<div

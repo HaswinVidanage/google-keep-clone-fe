@@ -60,7 +60,8 @@ const useStyles = makeStyles(theme => ({
 		display: 'flex',
 		alignItems: 'start',
 		padding: 16,
-		flexDirection: 'column'
+		flexDirection: 'column',
+		backgroundColor: theme.custom.palette.noteBackground.orange
 	},
 	noteTitle: {
 
@@ -89,7 +90,6 @@ const ListNotes = (props) => {
 	const { data, fetching, error } = result;
 	const notes  = get(data, 'notes', []);
 	useEffect( () => {
-		// Update the document title using the browser API
 		getNotes()
 	}, []);
 

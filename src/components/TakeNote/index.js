@@ -23,20 +23,45 @@ import {
 	UndoOutlined as UndoIcon,
 	RedoOutlined as RedoIcon,
 } from "@material-ui/icons";
+import {useMutation} from "urql";
+
+const CreateNoteGql = `
+	mutation createNote($title: String!, $content: String!) {
+	  createNote(input:{title: $title, content: $content}) {
+	    id
+	    title
+	    content
+	    user {
+	      id
+	      name
+	      email
+	    }
+	  }
+	}
+`;
 
 
 const TakeNote = (props) => {
 	const { classes } = props;
-
-	const [isFocussed, setFocussed] = useState(false);
-
 	const theme = useTheme();
+	const [isFocussed, setFocussed] = useState(false);
+	const [title, setTitle] = useState("");
+	const [content, setContent] = useState("");
+	const [doCreateNoteResult, doCreateNote] = useMutation(CreateNoteGql);
+	const handleSaveNote = async () => {
+		setFocussed(false);
+		const params = {
+			title,
+			content
+		};
+		await doCreateNote(params);
+	};
+
 	return (
 		<div className={classes.root}>
 			<ClickAwayListener onClickAway={() => {
 				if(isFocussed) {
-					alert('saved');
-					setFocussed(false);
+					handleSaveNote();
 				}
 			}}>
 			<Paper elevation={5}
@@ -54,7 +79,7 @@ const TakeNote = (props) => {
 								input: classes.inputInput,
 							}}
 							onFocus={() => setFocussed(true)}
-							// onBlur={() => setFocussed(false)}
+							onChange={event => setTitle(event.target.value)}
 						/>
 						<div className={classes.tools}>
 							{isFocussed ? (
@@ -97,61 +122,62 @@ const TakeNote = (props) => {
 									root: classes.inputRoot,
 									input: classes.takeNoteInput,
 									}}
+									onChange={event => setContent(event.target.value)}
 								/>
 							</div>
 							<div className={classes.takeNoteFooter}>
 								<Grid container spacing={1}>
 									<Grid item md={1} >
-										<IconButton color="inherit" size='small'>
-											<Badge >
+										<IconButton color="inherit" size='small' disabled>
+											<Badge  >
 												<ReminderIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>
 									<Grid item md={1} >
-										<IconButton color="inherit" size='small'>
+										<IconButton color="inherit" size='small' disabled>
 											<Badge >
 												<CollabIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>
 									<Grid item md={1} >
-										<IconButton color="inherit" size='small'>
+										<IconButton color="inherit" size='small' disabled>
 											<Badge >
 												<ColourIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>
 									<Grid item md={1} >
-										<IconButton color="inherit" size='small'>
+										<IconButton color="inherit" size='small' disabled>
 											<Badge >
 												<ImageIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>
 									<Grid item md={1} >
-										<IconButton color="inherit" size='small'>
+										<IconButton color="inherit" size='small' disabled>
 											<Badge >
 												<ArchiveIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>
 									<Grid item md={1} >
-										<IconButton color="inherit" size='small'>
+										<IconButton color="inherit" size='small' disabled>
 											<Badge >
 												<MoreIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>
 									<Grid item md={1} >
-										<IconButton color="inherit" size='small'>
+										<IconButton color="inherit" size='small' disabled>
 											<Badge >
 												<UndoIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>
 									<Grid item md={1} >
-										<IconButton color="inherit" size='small'>
+										<IconButton color="inherit" size='small' disabled>
 											<Badge >
 												<RedoIcon/>
 											</Badge>
@@ -162,7 +188,7 @@ const TakeNote = (props) => {
 											<Button
 												size="small"
 												style={{textTransform: 'none', fontWeight: 'bold'}}
-												onClick={() => { setFocussed(false) }}
+												onClick={() => { handleSaveNote(); }}
 											>
 												Close
 											</Button>
@@ -252,7 +278,6 @@ const styles = theme => ({
 	takeNoteContainer: {
 		display: "flex",
 		flexDirection: "row",
-		// backgroundColor: 'red',
 	},
 	takeNoteFooter: {
 		display: "flex",

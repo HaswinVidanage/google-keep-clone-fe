@@ -25,11 +25,7 @@ const AppContainer = () => {
 			<Router>
 				<Switch>
 					<PrivateRoute exact path="/">
-						<UserProvider user={{}}>
-							<UiProvider>
-								<Dashboard/>
-							</UiProvider>
-						</UserProvider>
+						<Dashboard/>
 					</PrivateRoute>
 					<Route path="/login">
 						<Login/>
