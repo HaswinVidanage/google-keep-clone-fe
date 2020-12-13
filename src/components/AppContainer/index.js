@@ -7,67 +7,38 @@ import {
 	Redirect,
 } from "react-router-dom";
 import {
-	Grid,
 	CssBaseline,
 } from '@material-ui/core';
-import CustomAppBar  from "../AppBar/customAppBar";
-import AppBody from '../AppBody';
 import Login from '../Login';
 import Dashboard from '../Dashboard';
 import {GetItem} from "../../utils/localstorage";
 import LOCAL_STORAGE_KEYS from "../../const/localstorage";
 import Register from "../Register";
-const theme = createMuiTheme({
-	palette: {
-		primary: {
-			main:'#FFF',
-		},
-		secondary: {
-			main: '#ffc107',
-		},
-	},
-});
-
-
-const useStyles = makeStyles((theme) => ({
-	root: {
-		flexGrow: 1,
-	},
-}));
-
-
-const HomePage = () => {
-	return (
-		<Grid container>
-			<Grid container item xs={12} >
-				<CustomAppBar/>
-				<AppBody/>
-			</Grid>
-		</Grid>
-	)
-};
+import {UiProvider, UserProvider} from "../../store";
+import { light } from "../../theme";
 
 
 const AppContainer = () => {
-	const classes = useStyles();
 	return (
-		<ThemeProvider theme={theme}>
+		<ThemeProvider theme={light}>
 			<CssBaseline />
-			<div className={classes.root}>
-				<Router>
-					<Switch>
-						<PrivateRoute exact path="/">
-							<Dashboard/>
-						</PrivateRoute>
-						<Route path="/login">
-							<Login/>
-						</Route>
-						<Route path="/register">
-							<Register/>
-						</Route>
-					</Switch>
-				</Router>
-			</div>
+			<Router>
+				<Switch>
+					<PrivateRoute exact path="/">
+						<UserProvider user={{}}>
+							<UiProvider>
+								<Dashboard/>
+							</UiProvider>
+						</UserProvider>
+					</PrivateRoute>
+					<Route path="/login">
+						<Login/>
+					</Route>
+					<Route path="/register">
+						<Register/>
+					</Route>
+				</Switch>
+			</Router>
 		</ThemeProvider>
 	);
 };

@@ -60,26 +60,26 @@ const TakeNote = (props) => {
 							{isFocussed ? (
 								<div className={classes.toolsWrapper} >
 									<IconButton color="inherit">
-										<Badge color="secondary">
-											<PinIcon  color="secondary"/>
+										<Badge >
+											<PinIcon/>
 										</Badge>
 									</IconButton>
 								</div>
 							) : (
 								<div className={classes.toolsWrapper} >
 									<IconButton color="inherit">
-										<Badge color="secondary">
-											<CheckIcon  color="secondary"/>
+										<Badge >
+											<CheckIcon/>
 										</Badge>
 									</IconButton>
 									<IconButton color="inherit">
-										<Badge color="secondary">
-											<BrushIcon  color="secondary"/>
+										<Badge >
+											<BrushIcon/>
 										</Badge>
 									</IconButton>
 									<IconButton color="inherit">
-										<Badge color="secondary">
-											<ImageIcon  color="secondary"/>
+										<Badge >
+											<ImageIcon/>
 										</Badge>
 									</IconButton>
 								</div>
@@ -103,57 +103,57 @@ const TakeNote = (props) => {
 								<Grid container spacing={1}>
 									<Grid item md={1} >
 										<IconButton color="inherit" size='small'>
-											<Badge color="secondary">
-												<ReminderIcon  color="secondary" />
+											<Badge >
+												<ReminderIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>
 									<Grid item md={1} >
 										<IconButton color="inherit" size='small'>
-											<Badge color="secondary">
-												<CollabIcon  color="secondary" />
+											<Badge >
+												<CollabIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>
 									<Grid item md={1} >
 										<IconButton color="inherit" size='small'>
-											<Badge color="secondary">
-												<ColourIcon  color="secondary" />
+											<Badge >
+												<ColourIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>
 									<Grid item md={1} >
 										<IconButton color="inherit" size='small'>
-											<Badge color="secondary">
-												<ImageIcon  color="secondary" />
+											<Badge >
+												<ImageIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>
 									<Grid item md={1} >
 										<IconButton color="inherit" size='small'>
-											<Badge color="secondary">
-												<ArchiveIcon  color="secondary" />
+											<Badge >
+												<ArchiveIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>
 									<Grid item md={1} >
 										<IconButton color="inherit" size='small'>
-											<Badge color="secondary">
-												<MoreIcon  color="secondary" />
+											<Badge >
+												<MoreIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>
 									<Grid item md={1} >
 										<IconButton color="inherit" size='small'>
-											<Badge color="secondary">
-												<UndoIcon  color="secondary" />
+											<Badge >
+												<UndoIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>
 									<Grid item md={1} >
 										<IconButton color="inherit" size='small'>
-											<Badge color="secondary">
-												<RedoIcon  color="secondary" />
+											<Badge >
+												<RedoIcon/>
 											</Badge>
 										</IconButton>
 									</Grid>

@@ -1,16 +1,24 @@
-import {Grid} from "@material-ui/core";
-import CustomAppBar  from "../AppBar/customAppBar";
+import {Container, Box} from "@material-ui/core";
+import CustomAppBar  from "../AppBar/AppBar";
 import React from "react";
 import AppBody from "../AppBody";
+import NavDrawer from "../NavDrawer/NavDrawer";
+import {UiProvider, UserProvider, useUserStore} from "../../store";
+import {ThemeProvider} from "styled-components";
+import { dark, light } from "../../theme";
 
 const Dashboard = () => {
+	const [{ isDarkMode }] = useUserStore();
 	return (
-		<Grid container>
-			<Grid container item xs={12} >
-				<CustomAppBar/>
-				<AppBody/>
-			</Grid>
-		</Grid>
+		<ThemeProvider theme={isDarkMode ? dark : light}>
+			<CustomAppBar/>
+			<NavDrawer/>
+			<Container maxWidth={false}>
+				<Box mt={8}>
+					<AppBody />
+				</Box>
+			</Container>
+		</ThemeProvider>
 	)
 };
 
