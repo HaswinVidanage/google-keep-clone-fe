@@ -2,8 +2,8 @@
   "name": "keep-fe",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://haswinvidanage.github.io/google-keep-clone-fe",
-  "predeploy": "npm run build",
+  "homepage": "https://haswinvidanage.github.io/keep-fe",
+  "predeploy": "yarn run build",
   "deploy": "gh-pages -d build",
   "dependencies": {
     "@material-ui/core": "^4.11.0",
