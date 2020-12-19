@@ -1,27 +1,27 @@
 {
   "files": {
-    "main.css": "/keep-fe/static/css/main.434306d2.chunk.css",
-    "main.js": "/keep-fe/static/js/main.17926ab0.chunk.js",
-    "main.js.map": "/keep-fe/static/js/main.17926ab0.chunk.js.map",
-    "runtime-main.js": "/keep-fe/static/js/runtime-main.4ff03d3d.js",
-    "runtime-main.js.map": "/keep-fe/static/js/runtime-main.4ff03d3d.js.map",
-    "static/js/2.cf0a48a9.chunk.js": "/keep-fe/static/js/2.cf0a48a9.chunk.js",
-    "static/js/2.cf0a48a9.chunk.js.map": "/keep-fe/static/js/2.cf0a48a9.chunk.js.map",
-    "static/js/3.92a9e661.chunk.js": "/keep-fe/static/js/3.92a9e661.chunk.js",
-    "static/js/3.92a9e661.chunk.js.map": "/keep-fe/static/js/3.92a9e661.chunk.js.map",
-    "index.html": "/keep-fe/index.html",
-    "static/css/main.434306d2.chunk.css.map": "/keep-fe/static/css/main.434306d2.chunk.css.map",
-    "static/js/2.cf0a48a9.chunk.js.LICENSE.txt": "/keep-fe/static/js/2.cf0a48a9.chunk.js.LICENSE.txt",
-    "static/media/Metropolis-Medium.b635e832.woff": "/keep-fe/static/media/Metropolis-Medium.b635e832.woff",
-    "static/media/Metropolis-SemiBold.6ea948bc.woff": "/keep-fe/static/media/Metropolis-SemiBold.6ea948bc.woff",
-    "static/media/Roboto-Bold.3f2cbde6.woff": "/keep-fe/static/media/Roboto-Bold.3f2cbde6.woff",
-    "static/media/Roboto-Medium.b14ca2d2.woff": "/keep-fe/static/media/Roboto-Medium.b14ca2d2.woff",
-    "static/media/Roboto-Regular.31012f9b.woff": "/keep-fe/static/media/Roboto-Regular.31012f9b.woff"
+    "main.css": "./static/css/main.434306d2.chunk.css",
+    "main.js": "./static/js/main.e5c9017f.chunk.js",
+    "main.js.map": "./static/js/main.e5c9017f.chunk.js.map",
+    "runtime-main.js": "./static/js/runtime-main.274a0766.js",
+    "runtime-main.js.map": "./static/js/runtime-main.274a0766.js.map",
+    "static/js/2.cf0a48a9.chunk.js": "./static/js/2.cf0a48a9.chunk.js",
+    "static/js/2.cf0a48a9.chunk.js.map": "./static/js/2.cf0a48a9.chunk.js.map",
+    "static/js/3.92a9e661.chunk.js": "./static/js/3.92a9e661.chunk.js",
+    "static/js/3.92a9e661.chunk.js.map": "./static/js/3.92a9e661.chunk.js.map",
+    "index.html": "./index.html",
+    "static/css/main.434306d2.chunk.css.map": "./static/css/main.434306d2.chunk.css.map",
+    "static/js/2.cf0a48a9.chunk.js.LICENSE.txt": "./static/js/2.cf0a48a9.chunk.js.LICENSE.txt",
+    "static/media/Metropolis-Medium.b635e832.woff": "./static/media/Metropolis-Medium.b635e832.woff",
+    "static/media/Metropolis-SemiBold.6ea948bc.woff": "./static/media/Metropolis-SemiBold.6ea948bc.woff",
+    "static/media/Roboto-Bold.3f2cbde6.woff": "./static/media/Roboto-Bold.3f2cbde6.woff",
+    "static/media/Roboto-Medium.b14ca2d2.woff": "./static/media/Roboto-Medium.b14ca2d2.woff",
+    "static/media/Roboto-Regular.31012f9b.woff": "./static/media/Roboto-Regular.31012f9b.woff"
   },
   "entrypoints": [
-    "static/js/runtime-main.4ff03d3d.js",
+    "static/js/runtime-main.274a0766.js",
     "static/js/2.cf0a48a9.chunk.js",
     "static/css/main.434306d2.chunk.css",
-    "static/js/main.17926ab0.chunk.js"
+    "static/js/main.e5c9017f.chunk.js"
   ]
 }
