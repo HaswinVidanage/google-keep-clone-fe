@@ -12,7 +12,7 @@ import {
 import PropTypes from "prop-types";
 import { useMutation } from 'urql';
 import {get} from "lodash";
-import {SetItem} from "../../utils/localstorage";
+import {GetItem, SetItem} from "../../utils/localstorage";
 import LOCAL_STORAGE_KEYS from "../../const/localstorage";
 import {SanitizeError} from "../../utils/errorhandler";
 
@@ -60,7 +60,10 @@ const Login = (props) => {
 	const handleToken = (token => {
 		if (token !== '') {
 			SetItem(LOCAL_STORAGE_KEYS.TOKEN, token);
-			history.replace(from);
+			// check for the token here
+			if (GetItem(LOCAL_STORAGE_KEYS.TOKEN) !== '') {
+				history.replace(from);
+			}
 		}
 	});
 
@@ -198,7 +201,6 @@ const styles = theme => ({
 		marginTop: theme.spacing(3)
 	},
 	loginButtonText: {
-		// ...theme.custom.fontFamily.metropolis,
 		color: theme.palette.secondary.contrastText,
 		textTransform: "capitalize"
 	},

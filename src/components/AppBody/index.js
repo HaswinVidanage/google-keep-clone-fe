@@ -1,8 +1,7 @@
 import React from "react";
-import PropTypes from "prop-types";
 import TakeNote from "../TakeNote";
 import ListNotes from "../ListNotes";
-import { makeStyles, useTheme, withStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { useMediaQuery } from "@material-ui/core";
 import { useUiStore, useTodosStore, useUserStore } from "../../store";
 

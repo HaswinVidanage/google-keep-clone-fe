@@ -1,5 +1,4 @@
 import React from "react";
-import { createMuiTheme, makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import {
 	BrowserRouter as Router,
 	Switch,
@@ -14,13 +13,10 @@ import Dashboard from '../Dashboard';
 import {GetItem} from "../../utils/localstorage";
 import LOCAL_STORAGE_KEYS from "../../const/localstorage";
 import Register from "../Register";
-import {UiProvider, UserProvider} from "../../store";
-import { light } from "../../theme";
-
 
 const AppContainer = () => {
 	return (
-		<ThemeProvider theme={light}>
+		<>
 			<CssBaseline />
 			<Router>
 				<Switch>
@@ -35,7 +31,7 @@ const AppContainer = () => {
 					</Route>
 				</Switch>
 			</Router>
-		</ThemeProvider>
+		</>
 	);
 };
 

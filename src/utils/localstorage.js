@@ -1,10 +1,5 @@
 const SetItem = (key, value) => {
-	try {
-		localStorage.setItem(key, value);
-	} catch (e) {
-		// todo log errors
-		throw e;
-	}
+	localStorage.setItem(key, value);
 };
 
 

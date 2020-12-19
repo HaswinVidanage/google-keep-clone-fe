@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {withStyles, useTheme, fade} from '@material-ui/core/styles';
+import {makeStyles, useTheme, fade} from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from "prop-types";
 import IconButton from '@material-ui/core/IconButton';
@@ -40,9 +40,97 @@ const CreateNoteGql = `
 	}
 `;
 
+const useStyles = makeStyles(theme => ({
+	root: {
+		display: 'grid',
+		marginTop: 32,
+		marginBottom: 16,
+		backgroundColor: theme.palette.primary,
+	},
+	paper: {
+		margin: 'auto',
+		width: 598,
+		backgroundColor: theme.palette.primary,
+	},
+	inputWrapper: {
+		display: 'flex',
+		justifyContent: 'flex',
+		alignItems: 'center',
+		borderRadius: theme.shape.borderRadius,
+		backgroundColor: theme.palette.primary,
+		borderWidth: "1px",
+		borderColor: theme.palette.divider,
+		height: 'inherit',
+	},
+	inputRoot: {
+		color: 'inherit',
+		width: '100%',
+		// backgroundColor: 'blue',
+	},
+	inputInput: {
+		// backgroundColor: 'red',
+		paddingTop: theme.spacing.unit,
+		paddingRight: theme.spacing.unit,
+		paddingBottom: theme.spacing.unit,
+		paddingLeft: theme.spacing.unit * 2,
+		transition: theme.transitions.create('width'),
+		width: '100%',
+		[theme.breakpoints.up('md')]: {
+			width: 200,
+		},
+	},
+	takeNoteInput: {
+		paddingTop: theme.spacing.unit,
+		paddingRight: theme.spacing.unit,
+		paddingBottom: theme.spacing.unit,
+		paddingLeft: theme.spacing.unit * 2,
+		transition: theme.transitions.create('width'),
+		width: '100%',
+	},
+	tools: {
+		display: 'flex',
+		flexDirection: 'row',
+	},
+	toolsWrapper: {
+		all: 'inherit'
+	},
+	collapsedContainer: {
+		display: 'flex',
+	},
+	paperWrapper: {
+		transition: theme.transitions.create("all", {
+			easing: theme.transitions.easing.easeIn,
+			duration: theme.transitions.duration.short
+		}),
+		borderColor: theme.custom.palette.itemBorderColor,
+		borderWidth: theme.spacing(0.1),
+		borderStyle: "solid"
+	},
+	wrapper: {
+		display: "flex",
+		flexDirection: "column"
+	},
+	takeNoteContainer: {
+		display: "flex",
+		flexDirection: "row",
+	},
+	takeNoteFooter: {
+		display: "flex",
+		flexDirection: "row",
+		flexWrap: 'wrap',
+		height: 34,
+		marginRight: 15,
+		marginLeft: 15,
+	},
+	closeBtnWrapper: {
+		display: 'flex',
+		justifyContent: 'flex-end',
+		flexWrap: 'wrap'
+	}
+}));
 
 const TakeNote = (props) => {
-	const { classes } = props;
+	const classes = useStyles();
 	const theme = useTheme();
 	const [isFocussed, setFocussed] = useState(false);
 	const [title, setTitle] = useState("");
@@ -54,9 +142,12 @@ const TakeNote = (props) => {
 			title,
 			content
 		};
+		if (title.trim() === '') {
+			return;
+		}
 		await doCreateNote(params);
 	};
-
+	const [color, setColor] = useState("default");
 	return (
 		<div className={classes.root}>
 			<ClickAwayListener onClickAway={() => {
@@ -66,6 +157,7 @@ const TakeNote = (props) => {
 			}}>
 			<Paper elevation={5}
 			       classes={{ root: classes.paperWrapper }}
+			       style={{ backgroundColor: theme.custom.palette.noteBackground[color] }}
 			       className={classes.paper}>
 				<Collapse
 					classes={{ wrapperInner: classes.wrapper }}
@@ -206,97 +298,6 @@ const TakeNote = (props) => {
 	);
 };
 
-const styles = theme => ({
-	root: {
-		display: 'grid',
-		marginTop: 32,
-		marginBottom: 16,
-	},
-	paper: {
-		margin: 'auto',
-		width: 598,
-		// minimumHeight: 44,
-	},
-	inputWrapper: {
-		display: 'flex',
-		justifyContent: 'flex',
-		alignItems: 'center',
-		borderRadius: theme.shape.borderRadius,
-		backgroundColor: theme.palette.primary,
-		borderWidth: "1px",
-		borderColor: theme.palette.divider,
-		height: 'inherit',
-	},
-	inputRoot: {
-		color: 'inherit',
-		width: '100%',
-		// backgroundColor: 'blue',
-	},
-	inputInput: {
-		// backgroundColor: 'red',
-		paddingTop: theme.spacing.unit,
-		paddingRight: theme.spacing.unit,
-		paddingBottom: theme.spacing.unit,
-		paddingLeft: theme.spacing.unit * 2,
-		transition: theme.transitions.create('width'),
-		width: '100%',
-		[theme.breakpoints.up('md')]: {
-			width: 200,
-		},
-	},
-	takeNoteInput: {
-		paddingTop: theme.spacing.unit,
-		paddingRight: theme.spacing.unit,
-		paddingBottom: theme.spacing.unit,
-		paddingLeft: theme.spacing.unit * 2,
-		transition: theme.transitions.create('width'),
-		width: '100%',
-	},
-	tools: {
-		display: 'flex',
-		flexDirection: 'row',
-	},
-	toolsWrapper : {
-		all: 'inherit'
-	},
-	collapsedContainer: {
-		display: 'flex',
-	},
-	paperWrapper: {
-		transition: theme.transitions.create("all", {
-			easing: theme.transitions.easing.easeIn,
-			duration: theme.transitions.duration.short
-		}),
-		borderColor: theme.palette.divider,
-		borderWidth: theme.spacing(0.1),
-		borderStyle: "solid"
-	},
-	wrapper: {
-		display: "flex",
-		flexDirection: "column"
-	},
-	takeNoteContainer: {
-		display: "flex",
-		flexDirection: "row",
-	},
-	takeNoteFooter: {
-		display: "flex",
-		flexDirection: "row",
-		flexWrap: 'wrap',
-		height: 34,
-		marginRight: 15,
-		marginLeft: 15,
-	},
-	closeBtnWrapper: {
-		display: 'flex',
-		justifyContent: 'flex-end',
-		flexWrap: 'wrap',
-	}
-});
 
-TakeNote.propTypes = {
-	classes: PropTypes.object.isRequired,
-};
-
-export default withStyles(styles)(TakeNote);
+export default TakeNote;
 

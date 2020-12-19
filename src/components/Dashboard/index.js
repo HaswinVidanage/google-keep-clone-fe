@@ -4,7 +4,7 @@ import React, {useEffect} from "react";
 import AppBody from "../AppBody";
 import NavDrawer from "../NavDrawer/NavDrawer";
 import {UiProvider, UserProvider, useUserStore} from "../../store";
-import {ThemeProvider} from "styled-components";
+import { ThemeProvider, CssBaseline } from "@material-ui/core"
 import { dark, light } from "../../theme";
 import {useQuery} from "urql";
 import {get} from "lodash";
@@ -27,10 +27,11 @@ const UserConfigGql = `
 const DashboardContent = () => {
 	const [{ isDarkMode }] = useUserStore();
 	return (
-		<ThemeProvider theme={isDarkMode ? dark : light}>
+		<ThemeProvider theme={isDarkMode? dark : light}>
+			<CssBaseline/>
 			<CustomAppBar/>
 			<NavDrawer/>
-			<Container maxWidth={false}>
+			<Container fixed maxWidth={false}>
 				<Box mt={8}>
 					<AppBody />
 				</Box>
