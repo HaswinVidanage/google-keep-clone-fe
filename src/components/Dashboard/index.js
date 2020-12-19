@@ -1,16 +1,61 @@
-import {Grid} from "@material-ui/core";
-import CustomAppBar  from "../AppBar/customAppBar";
-import React from "react";
+import {Container, Box} from "@material-ui/core";
+import CustomAppBar  from "../AppBar/AppBar";
+import React, {useEffect} from "react";
 import AppBody from "../AppBody";
+import NavDrawer from "../NavDrawer/NavDrawer";
+import {UiProvider, UserProvider, useUserStore} from "../../store";
+import { ThemeProvider, CssBaseline } from "@material-ui/core"
+import { dark, light } from "../../theme";
+import {useQuery} from "urql";
+import {get} from "lodash";
+
+const UserConfigGql = `
+	query userConfig {
+	  userConfig {
+	    id
+	    isDarkMode
+	    isListMode
+	    user {
+	      id
+	      name
+	      email
+	    }
+	  }
+	}
+`;
+
+const DashboardContent = () => {
+	const [{ isDarkMode }] = useUserStore();
+	return (
+		<ThemeProvider theme={isDarkMode? dark : light}>
+			<CssBaseline/>
+			<CustomAppBar/>
+			<NavDrawer/>
+			<Container fixed maxWidth={false}>
+				<Box mt={8}>
+					<AppBody />
+				</Box>
+			</Container>
+		</ThemeProvider>
+	);
+};
 
 const Dashboard = () => {
+	const [getUserConfigResult, getUserConfig] = useQuery({
+		query: UserConfigGql
+	});
+	const { data, fetching, error } = getUserConfigResult;
+	useEffect( () => {
+		getUserConfig()
+	}, []);
+
+	const userConfig = get(data, 'userConfig', {});
 	return (
-		<Grid container>
-			<Grid container item xs={12} >
-				<CustomAppBar/>
-				<AppBody/>
-			</Grid>
-		</Grid>
+		<UserProvider user={userConfig.user}>
+			<UiProvider>
+				<DashboardContent/>
+			</UiProvider>
+		</UserProvider>
 	)
 };
 

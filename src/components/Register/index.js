@@ -126,6 +126,7 @@ const Register = (props) => {
 	};
 
 	const handleToken = (token => {
+		console.log('HDV token: ', token);
 		if (token !== '') {
 			SetItem(LOCAL_STORAGE_KEYS.TOKEN, token);
 			history.push("/");
