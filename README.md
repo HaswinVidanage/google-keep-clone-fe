@@ -7,6 +7,8 @@ A minimal *clone* of [Google Keep](https://keep.google.com) written in [ReactJS]
 ![Light and Dark theme demo](./docs/dark-light-theme.gif)
 <br/>*Light and Dark theme*
 
+</div>
+
 ## Features
 
 * 🔐 **Login** & 🔏 **Register** for creating a new user
