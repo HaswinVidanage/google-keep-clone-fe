@@ -45,7 +45,6 @@ A minimal *clone* of [Google Keep](https://keep.google.com) written in [ReactJS]
 
 </div>
 
-<div align="center">
 
 ## Libraries Used
 
