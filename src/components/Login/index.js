@@ -78,7 +78,7 @@ const Login = (props) => {
 								src={`../assets/logo.png`}
 								alt={"logo"} />
 
-							<Typography className={classes.textWelcome} color="textSecondary" variant="subtitle1">Welcome back again!</Typography>
+							<Typography className={classes.textWelcome} color="textSecondary" variant="subtitle1">Welcome back!</Typography>
 							<TextField
 								type="email"
 								error={doLoginResult.error}
